@@ -19,6 +19,12 @@
     tbody.append(makeTableRow("Message Id", item.internetMessageId));
     tbody.append(makeTableRow("From", item.from.displayName + " &lt;" +
       item.from.emailAddress + "&gt;"));
+    tbody.append("foobar");
+    var keys = [];
+    for (var key in item) {
+      keys.push(key)
+    }
+    tbody.append(keys.join("<br>"));
   }
 
   function makeTableRow(name, value) {

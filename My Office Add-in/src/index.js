@@ -19,11 +19,16 @@
     tbody.append(makeTableRow("Message Id", item.internetMessageId));
     tbody.append(makeTableRow("From", item.from.displayName + " &lt;" +
       item.from.emailAddress + "&gt;"));
-    tbody.append("Asking for BCC.");
-    item.bcc.getAsync(bccRecipients => {
-      tbody.append(makeTableRow("BCC", bccRecipients.join(" ")));
-    })
-    tbody.append("Waiting for BCC.");
+    // item.bcc.getAsync(bccRecipients => {
+    //   const bccEmails = bccRecipients.value.map(r => r.emailAddress);
+    //   tbody.append(makeTableRow("BCC", bccEmails));
+    // })
+    // item.loadCustomPropertiesAsync(x => {
+    //   const ready = readline();
+    //   const customProps = x.value;
+    //   console.log(x);
+    //   console.log(customProps.get("PR_TRANSPORT_MESSAGE_HEADERS"));
+    // });
     /*
     var keys = [];
     for (var key in item) {

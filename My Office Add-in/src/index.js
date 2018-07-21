@@ -42,9 +42,16 @@
   }
 
   function getTransportHeaders(context, accessToken) {
+    var PR_TRANSPORT_MESSAGE_HEADERS = "0x007D"
     var itemId = getItemRestId(context);
     var getMessageUrl = context.mailbox.restUrl
-      + '/v2.0/me/messages/' + itemId;
+      + "/v2.0/me/messages/" + itemId
+      + "?$expand=SingleValueExtendedProperties"
+      + "($filter=PropertyId eq 'String 0x007D')"
+    console.log("url = " + context.mailbox.restUrl);
+    console.log("itemId = " + itemId);
+    console.log("token = " + accessToken);
+    console.log("full request url = " + getMessageUrl);
     return $.ajax({
       url: getMessageUrl,
       dataType: 'json',

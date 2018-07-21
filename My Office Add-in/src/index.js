@@ -6,8 +6,51 @@
   Office.initialize = function (reason) {
     $(document).ready(function () {
       loadItemProps(Office.context.mailbox.item);
+      $('#test-me').click(() => debug(Office.context));
     });
   };
+
+  function debug(context) {
+    console.log("Hello World!");
+    getRestToken(context.mailbox)
+      .then(token => getTransportHeaders(context, token))
+      .then(item => {
+        console.log(item)})
+  }
+
+  function getRestToken(mailbox) {
+    return new Promise((resolve, reject) => {
+      mailbox.getCallbackTokenAsync({isRest: true}, result => {
+        if (result.status === "succeeded") {
+          resolve(result.value);
+        } else {
+          reject(result.status);
+        }
+      })
+    })
+  }
+
+  function getItemRestId(context) {
+    if (context.mailbox.diagnostics.hostName === "OutlookIOS") {
+      return context.mailbox.item.itemId;
+    } else {
+      return context.mailbox.convertToRestId(
+        context.mailbox.item.itemId,
+        Office.MailboxEnums.RestVersion.v2_0
+      );
+    }
+  }
+
+  function getTransportHeaders(context, accessToken) {
+    var itemId = getItemRestId(context);
+    var getMessageUrl = context.mailbox.restUrl
+      + '/v2.0/me/messages/' + itemId;
+    return $.ajax({
+      url: getMessageUrl,
+      dataType: 'json',
+      headers: {'Authorization': "Bearer " + accessToken}
+    })
+  }
 
   function loadItemProps(item) {
     // Get the table body element
